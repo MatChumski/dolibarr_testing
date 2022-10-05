@@ -1,0 +1,53 @@
+# Copyright (C) 2022 SuperAdmin <practicantegt21@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleTest1Name'
+ModuleTest1Name = Test1
+# Module description 'ModuleTest1Desc'
+ModuleTest1Desc = Test1 description
+
+#
+# Admin page
+#
+Test1Setup = Test1 setup
+Settings = Settings
+Test1SetupPage = Test1 setup page
+TEST1_MYPARAM1 = My param 1
+TEST1_MYPARAM1Tooltip = My param 1 tooltip
+TEST1_MYPARAM2=My param 2
+TEST1_MYPARAM2Tooltip=My param 2 tooltip
+
+
+#
+# About page
+#
+About = About
+Test1About = About Test1
+Test1AboutPage = Test1 about page
+
+#
+# Sample page
+#
+MyPageName = My page name
+
+#
+# Sample widget
+#
+MyWidget = My widget
+MyWidgetDescription = My widget description

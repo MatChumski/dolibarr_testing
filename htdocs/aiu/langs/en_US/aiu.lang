@@ -1,0 +1,14 @@
+﻿# Dolibarr language file - en_US 
+CHARSET=UTF-8
+aiu=AIU
+TabAIU=AIU
+TabFacturaAIU=AIU
+TabPedidoAIU=AIU
+aiu_factura_encabezado = Define the AIU values for the invoice
+aiu_pedido_encabezado = Define the AIU values for the order
+aiu_presupuesto_encabezado = Define the AIU values for the propal
+aiu_administracion = Administration
+aiu_imprevisto = Unexpected
+aiu_utilidad = Utility
+aiu_forma_aplicar = Apply as
+Developer = Software developer

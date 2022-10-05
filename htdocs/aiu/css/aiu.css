@@ -1,0 +1,19 @@
+fieldset.aiu_box
+{
+	float:left;
+	width:28%;
+	margin:10px;
+}
+
+fieldset.administracion
+{
+	background-color:#FFE1E1;
+}
+fieldset.imprevisto
+{
+	background-color:#FFFF64;
+}
+fieldset.utilidad
+{
+	background-color:#CACAFF;
+}
