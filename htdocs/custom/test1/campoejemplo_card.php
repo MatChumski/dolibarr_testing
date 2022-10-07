@@ -17,9 +17,9 @@
  */
 
 /**
- *   	\file       implementacion_card.php
- *		\ingroup    socinexus
- *		\brief      Page to create/edit/view implementacion
+ *   	\file       campoejemplo_card.php
+ *		\ingroup    test1
+ *		\brief      Page to create/edit/view campoejemplo
  */
 
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
@@ -77,11 +77,11 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
-dol_include_once('/socinexus/class/implementacion.class.php');
-dol_include_once('/socinexus/lib/socinexus_implementacion.lib.php');
+dol_include_once('/test1/class/campoejemplo.class.php');
+dol_include_once('/test1/lib/test1_campoejemplo.lib.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("socinexus@socinexus", "other"));
+$langs->loadLangs(array("test1@test1", "other"));
 
 // Get parameters
 $id = GETPOST('id', 'int');
@@ -89,16 +89,16 @@ $ref = GETPOST('ref', 'alpha');
 $action = GETPOST('action', 'aZ09');
 $confirm = GETPOST('confirm', 'alpha');
 $cancel = GETPOST('cancel', 'aZ09');
-$contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'implementacioncard'; // To manage different context of search
+$contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'campoejemplocard'; // To manage different context of search
 $backtopage = GETPOST('backtopage', 'alpha');
 $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
 //$lineid   = GETPOST('lineid', 'int');
 
 // Initialize technical objects
-$object = new Implementacion($db);
+$object = new CampoEjemplo($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->socinexus->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('implementacioncard', 'globalcard')); // Note that conf->hooks_modules contains array
+$diroutputmassaction = $conf->test1->dir_output.'/temp/massgeneration/'.$user->id;
+$hookmanager->initHooks(array('campoejemplocard', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
@@ -122,19 +122,19 @@ if (empty($action) && empty($id) && empty($ref)) {
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
 
 
-$permissiontoread = $user->rights->socinexus->implementacion->read;
-$permissiontoadd = $user->rights->socinexus->implementacion->write; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
-$permissiontodelete = $user->rights->socinexus->implementacion->delete || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
-$permissionnote = $user->rights->socinexus->implementacion->write; // Used by the include of actions_setnotes.inc.php
-$permissiondellink = $user->rights->socinexus->implementacion->write; // Used by the include of actions_dellink.inc.php
-$upload_dir = $conf->socinexus->multidir_output[isset($object->entity) ? $object->entity : 1].'/implementacion';
+$permissiontoread = $user->rights->test1->campoejemplo->read;
+$permissiontoadd = $user->rights->test1->campoejemplo->write; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+$permissiontodelete = $user->rights->test1->campoejemplo->delete || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
+$permissionnote = $user->rights->test1->campoejemplo->write; // Used by the include of actions_setnotes.inc.php
+$permissiondellink = $user->rights->test1->campoejemplo->write; // Used by the include of actions_dellink.inc.php
+$upload_dir = $conf->test1->multidir_output[isset($object->entity) ? $object->entity : 1].'/campoejemplo';
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->socinexus->enabled)) accessforbidden();
+//if (empty($conf->test1->enabled)) accessforbidden();
 //if (!$permissiontoread) accessforbidden();
 
 
@@ -151,19 +151,19 @@ if ($reshook < 0) {
 if (empty($reshook)) {
 	$error = 0;
 
-	$backurlforlist = dol_buildpath('/socinexus/implementacion_list.php', 1);
+	$backurlforlist = dol_buildpath('/test1/campoejemplo_list.php', 1);
 
 	if (empty($backtopage) || ($cancel && empty($id))) {
 		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
 			if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
 				$backtopage = $backurlforlist;
 			} else {
-				$backtopage = dol_buildpath('/socinexus/implementacion_card.php', 1).'?id='.($id > 0 ? $id : '__ID__');
+				$backtopage = dol_buildpath('/test1/campoejemplo_card.php', 1).'?id='.($id > 0 ? $id : '__ID__');
 			}
 		}
 	}
 
-	$triggermodname = 'SOCINEXUS_IMPLEMENTACION_MODIFY'; // Name of trigger action code to execute when we modify record
+	$triggermodname = 'TEST1_CAMPOEJEMPLO_MODIFY'; // Name of trigger action code to execute when we modify record
 
 	// Actions cancel, add, update, update_extras, confirm_validate, confirm_delete, confirm_deleteline, confirm_clone, confirm_close, confirm_setdraft, confirm_reopen
 	include DOL_DOCUMENT_ROOT.'/core/actions_addupdatedelete.inc.php';
@@ -188,9 +188,9 @@ if (empty($reshook)) {
 	}
 
 	// Actions to send emails
-	$triggersendname = 'SOCINEXUS_IMPLEMENTACION_SENTBYMAIL';
-	$autocopy = 'MAIN_MAIL_AUTOCOPY_IMPLEMENTACION_TO';
-	$trackid = 'implementacion'.$object->id;
+	$triggersendname = 'TEST1_CAMPOEJEMPLO_SENTBYMAIL';
+	$autocopy = 'MAIN_MAIL_AUTOCOPY_CAMPOEJEMPLO_TO';
+	$trackid = 'campoejemplo'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/actions_sendmails.inc.php';
 }
 
@@ -207,7 +207,7 @@ $form = new Form($db);
 $formfile = new FormFile($db);
 $formproject = new FormProjets($db);
 
-$title = $langs->trans("Implementacion");
+$title = $langs->trans("CampoEjemplo");
 $help_url = '';
 llxHeader('', $title, $help_url);
 
@@ -229,7 +229,7 @@ llxHeader('', $title, $help_url);
 
 // Part to create
 if ($action == 'create') {
-	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("Implementacion")), '', 'object_'.$object->picto);
+	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("CampoEjemplo")), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -271,7 +271,7 @@ if ($action == 'create') {
 
 // Part to edit record
 if (($id || $ref) && $action == 'edit') {
-	print load_fiche_titre($langs->trans("Implementacion"), '', 'object_'.$object->picto);
+	print load_fiche_titre($langs->trans("CampoEjemplo"), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -309,14 +309,14 @@ if (($id || $ref) && $action == 'edit') {
 if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'))) {
 	$res = $object->fetch_optionals();
 
-	$head = implementacionPrepareHead($object);
+	$head = campoejemploPrepareHead($object);
 	print dol_get_fiche_head($head, 'card', $langs->trans("Workstation"), -1, $object->picto);
 
 	$formconfirm = '';
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('DeleteImplementacion'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('DeleteCampoEjemplo'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
 	}
 	// Confirmation to delete line
 	if ($action == 'deleteline') {
@@ -360,7 +360,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/socinexus/socinexusindex.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/test1/campoejemplo_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
@@ -482,12 +482,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	if ($action != 'presend' && $action != 'editline') {
 		print '<div class="tabsAction">'."\n";
 		$parameters = array();
-		$reshook = $hookmanager->executeHooks(
-			'addMoreActionsButtons', 
-			$parameters, 
-			$object, 
-			$action
-		); // Note that $action and $object may have been modified by hook
+		$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 		if ($reshook < 0) {
 			setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 		}
@@ -495,150 +490,48 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if (empty($reshook)) {
 			// Send
 			if (empty($user->socid)) {
-				print dolGetButtonAction(
-					$langs->trans('SendMail'), 
-					'', 
-					'default', 
-					$_SERVER["PHP_SELF"].
-					'?id='.
-					$object->id.
-					'&action=presend&mode=init&token='.
-					newToken().
-					'#formmailbeforetitle'
-				);
+				print dolGetButtonAction($langs->trans('SendMail'), '', 'default', $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=presend&mode=init&token='.newToken().'#formmailbeforetitle');
 			}
 
 			// Back to draft
 			if ($object->status == $object::STATUS_VALIDATED) {
-				print dolGetButtonAction(
-					$langs->trans('SetToDraft'), 
-					'', 
-					'default', 
-					$_SERVER["PHP_SELF"].
-					'?id='.
-					$object->id.
-					'&action=confirm_setdraft&confirm=yes&token='.
-					newToken(), 
-					'', 
-					$permissiontoadd
-				);
+				print dolGetButtonAction($langs->trans('SetToDraft'), '', 'default', $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_setdraft&confirm=yes&token='.newToken(), '', $permissiontoadd);
 			}
 
-			print dolGetButtonAction(
-				$langs->trans('Modify'), 
-				'', 
-				'default', 
-				$_SERVER["PHP_SELF"].
-				'?id='.
-				$object->id.
-				'&action=edit&token='.
-				newToken(), 
-				'', 
-				$permissiontoadd
-			);
+			print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=edit&token='.newToken(), '', $permissiontoadd);
 
 			// Validate
-			/* if ($object->status == $object::STATUS_DRAFT) {
-				if (empty($object->table_element_line) || 
-				(is_array($object->lines) 
-				&& count($object->lines) > 0)) 
-				{
-					print dolGetButtonAction(
-						$langs->trans('Validate'), '', 
-						'default', $_SERVER['PHP_SELF'].
-						'?id='.$object->id.
-						'&action=confirm_validate&confirm=yes&token='.
-						newToken(), '', 
-						$permissiontoadd
-					);
+			if ($object->status == $object::STATUS_DRAFT) {
+				if (empty($object->table_element_line) || (is_array($object->lines) && count($object->lines) > 0)) {
+					print dolGetButtonAction($langs->trans('Validate'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken(), '', $permissiontoadd);
 				} else {
 					$langs->load("errors");
-					print dolGetButtonAction(
-						$langs->trans("ErrorAddAtLeastOneLineFirst"), 
-						$langs->trans("Validate"), 
-						'default', 
-						'#', 
-						'', 
-						0
-					);
+					print dolGetButtonAction($langs->trans("ErrorAddAtLeastOneLineFirst"), $langs->trans("Validate"), 'default', '#', '', 0);
 				}
-			} */
+			}
 
 			// Clone
-			print dolGetButtonAction(
-				$langs->trans('ToClone'), 
-				'', 
-				'default', 
-				$_SERVER['PHP_SELF'].
-				'?id='.
-				$object->id.
-				'&socid='.
-				$object->socid.
-				'&action=clone&token='.
-				newToken(), 
-				'', 
-				$permissiontoadd
-			);
+			print dolGetButtonAction($langs->trans('ToClone'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&socid='.$object->socid.'&action=clone&token='.newToken(), '', $permissiontoadd);
 
 			/*
 			if ($permissiontoadd) {
 				if ($object->status == $object::STATUS_ENABLED) {
-					print dolGetButtonAction(
-						$langs->trans('Disable'), '', 
-						'default', $_SERVER['PHP_SELF'].
-						'?id='.$object->id.
-						'&action=disable&token='.
-						newToken(), '', 
-						$permissiontoadd
-					);
+					print dolGetButtonAction($langs->trans('Disable'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=disable&token='.newToken(), '', $permissiontoadd);
 				} else {
-					print dolGetButtonAction(
-						$langs->trans('Enable'), '', 
-						'default', $_SERVER['PHP_SELF'].
-						'?id='.$object->id.
-						'&action=enable&token='.
-						newToken(), '', 
-						$permissiontoadd
-					);
+					print dolGetButtonAction($langs->trans('Enable'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=enable&token='.newToken(), '', $permissiontoadd);
 				}
 			}
 			if ($permissiontoadd) {
 				if ($object->status == $object::STATUS_VALIDATED) {
-					print dolGetButtonAction(
-						$langs->trans('Cancel'), '', 
-						'default', $_SERVER['PHP_SELF'].
-						'?id='.$object->id.
-						'&action=close&token='.
-						newToken(), '', 
-						$permissiontoadd
-					);
+					print dolGetButtonAction($langs->trans('Cancel'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontoadd);
 				} else {
-					print dolGetButtonAction(
-						$langs->trans('Re-Open'), '', 
-						'default', $_SERVER['PHP_SELF'].
-						'?id='.$object->id.
-						'&action=reopen&token='.
-						newToken(), '', 
-						$permissiontoadd
-					);
+					print dolGetButtonAction($langs->trans('Re-Open'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken(), '', $permissiontoadd);
 				}
 			}
 			*/
 
-			// Delete (need delete permission, 
-			//or if draft, just need create/modify permission)
-			print dolGetButtonAction(
-				$langs->trans('Delete'), 
-				'', 
-				'delete', 
-				$_SERVER['PHP_SELF'].
-				'?id='.
-				$object->id.
-				'&action=delete&token='.
-				newToken(), 
-				'', 
-				$permissiontodelete || 
-				($object->status == $object::STATUS_DRAFT && $permissiontoadd));
+			// Delete (need delete permission, or if draft, just need create/modify permission)
+			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), '', $permissiontodelete || ($object->status == $object::STATUS_DRAFT && $permissiontoadd));
 		}
 		print '</div>'."\n";
 	}
@@ -659,15 +552,15 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if ($includedocgeneration) {
 			$objref = dol_sanitizeFileName($object->ref);
 			$relativepath = $objref.'/'.$objref.'.pdf';
-			$filedir = $conf->socinexus->dir_output.'/'.$object->element.'/'.$objref;
+			$filedir = $conf->test1->dir_output.'/'.$object->element.'/'.$objref;
 			$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-			$genallowed = $user->rights->socinexus->implementacion->read; // If you can read, you can build the PDF to read content
-			$delallowed = $user->rights->socinexus->implementacion->write; // If you can create/edit, you can remove a file on card
-			print $formfile->showdocuments('socinexus:Implementacion', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);
+			$genallowed = $user->rights->test1->campoejemplo->read; // If you can read, you can build the PDF to read content
+			$delallowed = $user->rights->test1->campoejemplo->write; // If you can create/edit, you can remove a file on card
+			print $formfile->showdocuments('test1:CampoEjemplo', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);
 		}
 
 		// Show links to link elements
-		$linktoelem = $form->showLinkToObjectBlock($object, null, array('implementacion'));
+		$linktoelem = $form->showLinkToObjectBlock($object, null, array('campoejemplo'));
 		$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
 
 
@@ -675,7 +568,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 		$MAXEVENT = 10;
 
-		$morehtmlright = '<a href="'.dol_buildpath('/socinexus/implementacion_agenda.php', 1).'?id='.$object->id.'">';
+		$morehtmlright = '<a href="'.dol_buildpath('/test1/campoejemplo_agenda.php', 1).'?id='.$object->id.'">';
 		$morehtmlright .= $langs->trans("SeeAll");
 		$morehtmlright .= '</a>';
 
@@ -693,10 +586,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	}
 
 	// Presend form
-	$modelmail = 'implementacion';
+	$modelmail = 'campoejemplo';
 	$defaulttopic = 'InformationMessage';
-	$diroutput = $conf->socinexus->dir_output;
-	$trackid = 'implementacion'.$object->id;
+	$diroutput = $conf->test1->dir_output;
+	$trackid = 'campoejemplo'.$object->id;
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
 }

@@ -265,43 +265,76 @@ class modSociNexus extends DolibarrModules
 		// Add here entries to declare new permissions
 		/* BEGIN MODULEBUILDER PERMISSIONS */
 
-		// PERMISO DE MODIFICACIÓN DE ENTRADAS
-		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Ver Implementaciones de SOCI'; // Permission label
+		/* 
+		PERMISO DE MODIFICACIÓN DE ENTRADAS
+		[0] = ID del permiso (no puede estar en uso)
+		[1] = Etiqueta del permiso
+		[2] = Tipo de permiso (r, w, d)
+		[3] = 1/0 - Si el permiso se asigna automáticamente a los usuarios nuevos
+		[4] = Acción del permiso
+		En código, se verifica el permiso con if ($user->rights->socinexus->acción->subacción)
+		[5] = Subacción (read, write, delete)
+		*/
+		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); 
+		$this->rights[$r][1] = 'Ver Implementaciones de SOCI'; 
 		$this->rights[$r][4] = 'implementacion';
-		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->socinexus->implementacion->read)
+		$this->rights[$r][5] = 'read'; 
 		$r++;
-		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Crear/Actualizar Implementaciones de SOCI'; // Permission label
+		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); 
+		$this->rights[$r][1] = 'Crear/Actualizar Implementaciones de SOCI'; 
 		$this->rights[$r][4] = 'implementacion';
-		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->socinexus->implementacion->write)
+		$this->rights[$r][5] = 'write'; 
 		$r++;
-		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Eliminar Implementaciones de SOCI'; // Permission label
+		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); 
+		$this->rights[$r][1] = 'Eliminar Implementaciones de SOCI'; 
 		$this->rights[$r][4] = 'implementacion';
-		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->socinexus->implementacion->delete)
+		$this->rights[$r][5] = 'delete'; 
 		$r++;
 		/* END MODULEBUILDER PERMISSIONS */
+
+		// Add here entries to declare new menus
+		/* 
+		- fk_menu = Menú origen
+		Si se deja en blanco, es un menú superior. 
+		Para menús laterales, se añade la referencia al menú superior, con 'fk_mainmenu=xxx'
+		o 'fk_mainmenu=xxx,fk_leftmenu=yyy', cuando es un submenú de otro menú lateral
+		- type = Tipo de Menú (top, left)
+		- titre = Título
+		- prefix = Ícono
+		- mainmenu = Nombre del menú principal
+		- leftmenu = Nombre del menú lateral (no aplica para el principal)
+		- url = Página que abre
+		- langs = Archivo de traducción en la carpeta langs
+		- position = Ubicación en el listado de menús
+		- enabled = Condición para que esté habilitado
+		- perms = Condición de permiso, según los que estén asignados
+		Si se deja un 1, todos los usuarios tendrán permiso de acceder al menú
+		- target
+		- user = Tipo de usuario que puede acceder
+		0, Internos
+		1, Externos
+		2, Ambos
+		*/
 
 		// Main menu entries to add
 		$this->menu = array();
 		$r = 0;
-		// Add here entries to declare new menus
+		
 		/* BEGIN MODULEBUILDER TOPMENU */
 		$this->menu[$r++] = array(
-			'fk_menu'=>'', // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-			'type'=>'top', // This is a Top menu entry
+			'fk_menu'=>'', 
+			'type'=>'top',
 			'titre'=>'ModuleSociNexusName',
 			'prefix' => img_picto('', $this->picto, 'class="paddingright pictofixedwidth valignmiddle"'),
 			'mainmenu'=>'socinexus',
 			'leftmenu'=>'',
 			'url'=>'/socinexus/socinexusindex.php',
-			'langs'=>'socinexus@socinexus', // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'langs'=>'socinexus@socinexus',
 			'position'=>1000 + $r,
-			'enabled'=>'$conf->socinexus->enabled', // Define condition to show or hide menu entry. Use '$conf->socinexus->enabled' if entry must be visible if module is enabled.
-			'perms'=>'$user->rights->socinexus->implementacion->read', // Use 'perms'=>'$user->rights->socinexus->implementacion->read' if you want your menu with a permission rules
+			'enabled'=>'$conf->socinexus->enabled', 
+			'perms'=>'$user->rights->socinexus->implementacion->read', 
 			'target'=>'',
-			'user'=>2, // 0=Menu for internal users, 1=external users, 2=both
+			'user'=>2, 
 		);
 		/* END MODULEBUILDER TOPMENU */
 		/* BEGIN MODULEBUILDER LEFTMENU IMPLEMENTACION
@@ -351,43 +384,31 @@ class modSociNexus extends DolibarrModules
 		*/
 
         $this->menu[$r++]=array(
-            // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
             'fk_menu'=>'fk_mainmenu=socinexus',
-            // This is a Left menu entry
             'type'=>'left',
             'titre'=>'Listado',
             'mainmenu'=>'socinexus',
             'leftmenu'=>'socinexus_implementacion',
             'url'=>'/socinexus/socinexusindex.php',
-            // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
             'langs'=>'socinexus@socinexus',
             'position'=>1100+$r,
-            // Define condition to show or hide menu entry. Use '$conf->socinexus->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
             'enabled'=>'$conf->socinexus->enabled',
-            // Use 'perms'=>'$user->rights->socinexus->level1->level2' if you want your menu with a permission rules
             'perms'=>'$user->rights->socinexus->implementacion->read',
             'target'=>'',
-            // 0=Menu for internal users, 1=external users, 2=both
             'user'=>2,
         );
         $this->menu[$r++]=array(
-            // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
             'fk_menu'=>'fk_mainmenu=socinexus,fk_leftmenu=socinexus_implementacion',
-            // This is a Left menu entry
             'type'=>'left',
             'titre'=>'Añadir Implementación',
             'mainmenu'=>'socinexus',
             'leftmenu'=>'socinexus_implementacion',
             'url'=>'/socinexus/implementacion_card.php?action=create',
-            // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
             'langs'=>'socinexus@socinexus',
             'position'=>1100+$r,
-            // Define condition to show or hide menu entry. Use '$conf->socinexus->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
             'enabled'=>'$conf->socinexus->enabled',
-            // Use 'perms'=>'$user->rights->socinexus->level1->level2' if you want your menu with a permission rules
             'perms'=>'$user->rights->socinexus->implementacion->write',
             'target'=>'',
-            // 0=Menu for internal users, 1=external users, 2=both
             'user'=>2
         );
 

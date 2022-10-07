@@ -229,7 +229,6 @@ if (! empty($conf->socinexus->enabled) && $user->rights->socinexus->implementaci
 	$sql .= " ORDER BY s.tms DESC";
 
 	$resql = $db->query($sql);
-
 	
 	if ($resql)
 	{
@@ -257,7 +256,7 @@ if (! empty($conf->socinexus->enabled) && $user->rights->socinexus->implementaci
 		print 'Tercero';
 		print '</th>';
 
-		print '<th style="max-width: 10px">';
+		print '<th>';
 		print 'URL';
 		print '</th>';
 
@@ -266,10 +265,6 @@ if (! empty($conf->socinexus->enabled) && $user->rights->socinexus->implementaci
 		print '<th>';
 		print 'Estado';
 		print '</th>';
-
-		/* print '<th>';
-		
-		print '</th>'; */
 
 		print '</tr>';
 
